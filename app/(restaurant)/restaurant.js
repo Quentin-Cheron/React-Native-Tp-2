@@ -1,7 +1,6 @@
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Button } from "react-native";
 import { Text, View } from "react-native";
 import { Image } from "expo-image";
-import { Button } from "react-native-elements";
 
 export default function RestaurantScreen() {
   const restaurant = {
@@ -58,16 +57,18 @@ export default function RestaurantScreen() {
         data={restaurant.products}
         renderItem={({ item }) => (
           <View style={styles.product}>
-            <Text>{item.name}</Text>
-            <Text>{item.price}</Text>
-            <Text>{item.description}</Text>
-            <Text>{item.favoris}</Text>
             <Image
               source={{ uri: item.image }}
               style={styles.image}
               contentFit="contain"
             />
-            <Button title="Ajouter au panier" style={styles.button} />
+            <View style={styles.productInfo}>
+              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.productPrice}>{item.price}</Text>
+              <Text style={styles.productDescription}>{item.description}</Text>
+              <Text style={styles.productFavoris}>{item.favoris} favoris</Text>
+              <Button color="#06c167" title="Ajouter au panier" />
+            </View>
           </View>
         )}
         keyExtractor={(item) => item.name}
@@ -79,43 +80,81 @@ export default function RestaurantScreen() {
 const styles = StyleSheet.create({
   containerHeader: {
     padding: 20,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   title: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
+    color: "#333",
   },
   description: {
     textAlign: "center",
+    fontSize: 16,
+    color: "#666",
+    marginVertical: 5,
   },
   address: {
     textAlign: "center",
-  },
-  product: {
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    marginBottom: 20,
-    marginHorizontal: 20,
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 15,
   },
   info: {
     flexDirection: "row",
     justifyContent: "space-around",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    margin: 20,
+    paddingVertical: 10,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   titleProduit: {
     margin: 20,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#333",
+  },
+  product: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#eee",
+    borderRadius: 10,
+    marginBottom: 20,
+    marginHorizontal: 20,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
+  productInfo: {
+    marginTop: 10,
+  },
+  productName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  productPrice: {
+    fontSize: 16,
+    color: "#06c167",
+    marginVertical: 5,
+  },
+  productDescription: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 5,
+  },
+  productFavoris: {
+    fontSize: 14,
+    color: "#999",
+    marginBottom: 10,
   },
   image: {
     width: "100%",
     height: 200,
-  },
-  button: {
-    margin: 10,
+    borderRadius: 10,
   },
 });
