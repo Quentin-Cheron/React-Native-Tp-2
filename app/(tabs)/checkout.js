@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { supabase } from "./lib/supabase";
-import Auth from "./components/Auth";
-import Account from "./components/Account";
+import { supabase } from "../../lib/supabase";
+import Account from "../../components/Account";
 import { View } from "react-native";
-import { Session } from "@supabase/supabase-js";
+import Checkout from "../../components/Checkout";
 
-export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
+export default function CheckoutScreen() {
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -23,7 +22,7 @@ export default function App() {
       {session && session.user ? (
         <Account key={session.user.id} session={session} />
       ) : (
-        <Auth />
+        <Checkout />
       )}
     </View>
   );
