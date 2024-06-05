@@ -20,7 +20,7 @@ export default function Auth() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
-      password: password,
+      password: password.toLowerCase(),
     });
 
     if (error) Alert.alert(error.message);
@@ -33,9 +33,11 @@ export default function Auth() {
       data: { session },
       error,
     } = await supabase.auth.signUp({
-      email: email,
+      email: email.toLowerCase(),
       password: password,
     });
+
+    console.log("data:", session, "error:", error);
 
     if (error) Alert.alert(error.message);
     if (!session)

@@ -1,28 +1,23 @@
 import { FlatList, ScrollView, StyleSheet, Button } from "react-native";
 import { Text, View } from "react-native";
 import { Image } from "expo-image";
-import { useNavigation } from "@react-navigation/native";
-import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../../services/products.service";
+import { PostProduct, fetchProducts } from "../../services/products.service";
 import { useRoute } from "@react-navigation/native";
 import { fetchSpecificRestaurants } from "../../services/restaurant.service";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function RestaurantScreen() {
   const [products, setProducts] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
 
-  const navigation = useNavigation();
   const route = useRoute();
 
   const { id } = route.params;
 
-  function addToCart() {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      session
-        ? navigation.navigate("(payment)/checkout")
-        : navigation.navigate("(auth)/index");
-    });
+  async function addToCart() {
+    console.log("add to cart");
+    const addProduct = await PostProduct(id);
   }
 
   useEffect(() => {
@@ -64,10 +59,10 @@ export default function RestaurantScreen() {
               <Text style={styles.productName}>{item.products_name}</Text>
               <Text style={styles.productPrice}>{item.product_sprice}</Text>
               <Text style={styles.productDescription}>
-                {item.product_description}
+                {item.products_description}
               </Text>
               <Text style={styles.productFavoris}>
-                {item.product_note} favoris
+                {item.products_note} <Ionicons name="star" size={10} />
               </Text>
               <Button
                 color="#06c167"
