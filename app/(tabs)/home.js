@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -12,42 +12,23 @@ import { Image } from "expo-image";
 import { useFonts } from "expo-font";
 
 import { useNavigation } from "@react-navigation/native";
-
-const restaurants = [
-  {
-    name: "Restaurant 1",
-    id: "1",
-    image:
-      "https://www.ridesharingforum.com/uploads/default/original/2X/5/5aac259337e048fdca663a0418f40d1366bc4cda.jpg",
-    delivrery: "Frais de livraison offerts",
-    note: "4.5",
-  },
-  {
-    name: "Restaurant 2",
-    id: "2",
-    image:
-      "https://www.nrn.com/sites/nrn.com/files/styles/article_featured_retina/public/Moshi-Moshi-resize.jpg?itok=1sbN41IN",
-    delivrery: "Frais de livraison de 2€",
-    note: "4.8",
-  },
-  {
-    name: "Restaurant 3",
-    id: "3",
-    image:
-      "https://tb-static.uber.com/prod/image-proc/processed_images/a4b44877b513cef87c20e4db5d901ed9/c73ecc27d2a9eaa735b1ee95304ba588.jpeg",
-    delivrery: "Frais de livraison de 5€",
-    note: "4.2",
-  },
-];
+import { Ionicons } from "@expo/vector-icons";
+import { fetchRestaurants } from "../../services/restaurant.service";
 
 export default function HomeScreen() {
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [restaurants, setRestaurants] = useState([]);
 
   const navigation = useNavigation();
 
-  const handleSelect = () => {
-    navigation.navigate("(restaurant)/restaurant");
+  const handleSelect = (id) => {
+    navigation.navigate("restaurant", { id });
   };
+
+  useEffect(() => {
+    fetchRestaurants().then((data) => {
+      setRestaurants(data);
+    });
+  }, []);
 
   const [fontsLoaded] = useFonts({
     "OpenSans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),
@@ -64,17 +45,27 @@ export default function HomeScreen() {
         data={restaurants}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={handleSelect}>
-            <Image source={{ uri: item.image }} style={styles.image} />
+          <TouchableOpacity
+            style={styles.item}
+            onPress={(e) => handleSelect(item.id)}
+          >
+            <Image
+              source={{ uri: item.restaurant_image }}
+              style={styles.image}
+            />
             <View style={styles.header}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text>{item.note}</Text>
+              <Text style={styles.name}>{item.restaurant_name}</Text>
+              <View style={styles.noteContenair}>
+                <Text style={styles.note}> {item.restaurant_favoris}</Text>
+                <Ionicons name="star" size={10} />
+              </View>
             </View>
-            <Text style={styles.delivrery}>{item.delivrery}</Text>
+            <Text style={styles.delivrery}>
+              Frais de livraison de {item.restaurant_fees} €
+            </Text>
           </TouchableOpacity>
         )}
       />
-      {selectedRestaurant && <Text>Selected: {selectedRestaurant.name}</Text>}
     </View>
   );
 }
@@ -105,5 +96,12 @@ const styles = StyleSheet.create({
   },
   delivrery: {
     fontSize: 14,
+  },
+  note: {
+    paddingRight: 3,
+  },
+  noteContenair: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

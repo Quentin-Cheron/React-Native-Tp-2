@@ -14,7 +14,19 @@ export default function AuthLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="restaurant"
+        options={{
+          title: "Restaurant",
+          tabBarButton: () => false,
+          tabBarIcon: () => (
+            <Ionicons name="checkmark" size={24} color="#045a4b" />
+          ),
+          headerStyle: { backgroundColor: "#06c167" },
+          headerTintColor: "#fff",
+        }}
+      />
+      <Tabs.Screen
+        name="(auth)/index"
         options={{
           title: "Auth",
           tabBarIcon: () => (
@@ -25,10 +37,22 @@ export default function AuthLayout() {
         }}
       />
       <Tabs.Screen
-        name="checkout"
+        name="(payment)/checkout"
         options={{
           title: "Panier",
           tabBarIcon: () => <Ionicons name="cart" size={24} color="#045a4b" />,
+          tabBarActiveBackgroundColor: "#06c167",
+          tabBarActiveTintColor: "#fff",
+        }}
+      />
+      <Tabs.Screen
+        name="(payment)/paymentConfirmation"
+        options={{
+          title: "Confirmation",
+          tabBarButton: () => false,
+          tabBarIcon: () => (
+            <Ionicons name="checkmark" size={24} color="#045a4b" />
+          ),
           tabBarActiveBackgroundColor: "#06c167",
           tabBarActiveTintColor: "#fff",
         }}
