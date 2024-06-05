@@ -6,6 +6,7 @@ import { PostProduct, fetchProducts } from "../../services/products.service";
 import { useRoute } from "@react-navigation/native";
 import { fetchSpecificRestaurants } from "../../services/restaurant.service";
 import { Ionicons } from "@expo/vector-icons";
+import { supabase } from "../../lib/supabase";
 
 export default function RestaurantScreen() {
   const [products, setProducts] = useState([]);
@@ -15,9 +16,23 @@ export default function RestaurantScreen() {
 
   const { id } = route.params;
 
-  async function addToCart() {
-    console.log("add to cart");
-    const addProduct = await PostProduct(id);
+  async function addToCart(productName, productPrice, productImage) {
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("Session utilisateur non trouvée.");
+      }
+
+      await PostProduct(session.user.id, {
+        name: productName,
+        price: productPrice,
+        image: productImage,
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'ajout au panier :", error);
+    }
   }
 
   useEffect(() => {
@@ -67,7 +82,13 @@ export default function RestaurantScreen() {
               <Button
                 color="#06c167"
                 title="Ajouter au panier"
-                onPress={addToCart}
+                onPress={() =>
+                  addToCart(
+                    item.products_name,
+                    item.products_price,
+                    item.products_image
+                  )
+                }
               />
             </View>
           </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -10,34 +10,14 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 
-const products = [
-  {
-    id: "1",
-    name: "Product 1",
-    price: "$10.00",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: "2",
-    name: "Product 2",
-    price: "$20.00",
-    image: "https://via.placeholder.com/150",
-  },
-  {
-    id: "3",
-    name: "Product 3",
-    price: "$30.00",
-    image: "https://via.placeholder.com/150",
-  },
-];
-
-export default function Checkout() {
+export default function Checkout({ data }) {
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Shopping Cart</Text>
       <FlatList
-        data={products}
+        data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.productContainer}>
@@ -48,15 +28,19 @@ export default function Checkout() {
             </View>
           </View>
         )}
-        ListFooterComponent={() => (
-          <TouchableOpacity
-            style={styles.checkoutButton}
-            onPress={() => navigation.navigate("(payment)/paymentConfirmation")}
-          >
-            <Text style={styles.checkoutButtonText}>Checkout</Text>
-          </TouchableOpacity>
-        )}
       />
+      {data.length === 0 ? (
+        <Text style={{ textAlign: "center", color: "#888" }}>
+          No products in cart
+        </Text>
+      ) : (
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          onPress={() => navigation.navigate("(payment)/paymentConfirmation")}
+        >
+          <Text style={styles.checkoutButtonText}>Checkout</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
