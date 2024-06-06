@@ -51,6 +51,8 @@ export async function CheckoutProduct(id, product) {
   }
 }
 
+// Add a product
+
 export async function PostProduct(product) {
   try {
     await fetch("https://txksgqhvbibpznqsmjqh.supabase.co/rest/v1/products", {
@@ -78,8 +80,13 @@ export async function FetchDeleteProduct(id) {
     const res = await fetch(
       `https://txksgqhvbibpznqsmjqh.supabase.co/rest/v1/products?id=eq.${id}`,
       {
-        method: "DELETE",
+        method: "PUT",
+        body: JSON.stringify({
+          id,
+          is_delete: true,
+        }),
         headers: {
+          "Content-Type": "application/json",
           apikey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
           Authorization: `Bearer ${process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY}`,
         },
@@ -90,11 +97,10 @@ export async function FetchDeleteProduct(id) {
       throw new Error("Failed to delete product");
     }
 
-    // La suppression est réussie, retournez la réponse (c'est généralement vide pour les suppressions)
     return await fetchProducts();
   } catch (error) {
     console.error("Failed to delete product", error);
-    throw error; // Rejeter l'erreur pour la gérer correctement dans le composant appelant
+    throw error;
   }
 }
 
@@ -105,8 +111,9 @@ export async function FetchUpdateProduct(id, product) {
     await fetch(
       `https://txksgqhvbibpznqsmjqh.supabase.co/rest/v1/products?id=eq.${id}`,
       {
-        method: "PATCH",
+        method: "PUT",
         body: JSON.stringify({
+          id,
           ...product,
         }),
         headers: {

@@ -2,17 +2,28 @@ import React from "react";
 import { Text, View, Button, StyleSheet, FlatList } from "react-native";
 
 export default function ProductList({ products, onUpdate, onDelete }) {
-  const renderItem = ({ item }) => (
-    <View style={styles.productItem}>
-      <Text style={styles.productName}>{item.products_name}</Text>
-      <Text style={styles.productDescription}>{item.products_description}</Text>
-      <Text style={styles.productPrice}>{item.products_price} €</Text>
-      <View style={styles.buttonContainer}>
-        <Button color="#06c167" title="Update" onPress={() => onUpdate(item)} />
-        <Button color="#06c167" title="Delete" onPress={() => onDelete(item)} />
+  const renderItem = ({ item }) =>
+    !item.is_delete && (
+      <View style={styles.productItem}>
+        <Text style={styles.productName}>{item.products_name}</Text>
+        <Text style={styles.productDescription}>
+          {item.products_description}
+        </Text>
+        <Text style={styles.productPrice}>{item.products_price} €</Text>
+        <View style={styles.buttonContainer}>
+          <Button
+            color="#06c167"
+            title="Update"
+            onPress={() => onUpdate(item)}
+          />
+          <Button
+            color="#06c167"
+            title="Delete"
+            onPress={() => onDelete(item)}
+          />
+        </View>
       </View>
-    </View>
-  );
+    );
 
   return (
     <FlatList

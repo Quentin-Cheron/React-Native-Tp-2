@@ -11,9 +11,13 @@ import { fetchSpecificRestaurants } from "../../services/restaurant.service";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../../lib/supabase";
 
+import { useNavigation } from "@react-navigation/native";
+
 export default function RestaurantScreen() {
   const [products, setProducts] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
+
+  const navigation = useNavigation();
 
   const route = useRoute();
 
@@ -24,8 +28,10 @@ export default function RestaurantScreen() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
+
       if (!session) {
-        throw new Error("Session utilisateur non trouvée.");
+        navigation.navigate("(auth)/index");
+        return;
       }
 
       await CheckoutProduct(session.user.id, {

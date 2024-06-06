@@ -1,11 +1,13 @@
 import React from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import { FetchDeleteProduct } from "../services/products.service";
+import { supabase } from "../lib/supabase";
 
 export function DeleteProduct({ product, onDeleteProduct }) {
   const handleDeleteProduct = async () => {
-    await FetchDeleteProduct(product.id);
-    // onDeleteProduct(product.id);
+    FetchDeleteProduct(product.id).then((res) => {
+      onDeleteProduct(res);
+    });
   };
 
   return (

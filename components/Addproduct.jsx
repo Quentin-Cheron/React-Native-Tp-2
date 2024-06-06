@@ -7,7 +7,6 @@ export default function AddProduct({ onAddProduct }) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [favoris, setFavoris] = useState("");
 
   const handleAddProduct = async () => {
     try {

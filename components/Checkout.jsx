@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Text,
   View,
@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -15,32 +16,40 @@ export default function Checkout({ data }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Shopping Cart</Text>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
+        ListHeaderComponent={() => (
+          <Text style={styles.header}>Shopping Cart</Text>
+        )}
         renderItem={({ item }) => (
           <View style={styles.productContainer}>
-            <Image source={{ uri: item.image }} style={styles.productImage} />
+            {item.image && (
+              <Image source={{ uri: item.image }} style={styles.productImage} />
+            )}
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.productPrice}>{item.price}</Text>
             </View>
           </View>
         )}
+        ListFooterComponent={() =>
+          data.length === 0 ? (
+            <Text style={{ textAlign: "center", color: "#888" }}>
+              No products in cart
+            </Text>
+          ) : (
+            <TouchableOpacity
+              style={styles.checkoutButton}
+              onPress={() =>
+                navigation.navigate("(payment)/paymentConfirmation")
+              }
+            >
+              <Text style={styles.checkoutButtonText}>Checkout</Text>
+            </TouchableOpacity>
+          )
+        }
       />
-      {data.length === 0 ? (
-        <Text style={{ textAlign: "center", color: "#888" }}>
-          No products in cart
-        </Text>
-      ) : (
-        <TouchableOpacity
-          style={styles.checkoutButton}
-          onPress={() => navigation.navigate("(payment)/paymentConfirmation")}
-        >
-          <Text style={styles.checkoutButtonText}>Checkout</Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 }

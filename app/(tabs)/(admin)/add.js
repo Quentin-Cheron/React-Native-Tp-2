@@ -5,10 +5,7 @@ import AddProduct from "../../../components/Addproduct";
 import UpdateProduct from "../../../components/UpdateProduct";
 import { DeleteProduct } from "../../../components/DeleteProduct";
 import ProductList from "../../../components/ProductList";
-import {
-  FetchDeleteProduct,
-  fetchProducts,
-} from "../../../services/products.service";
+import { fetchProducts } from "../../../services/products.service";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
@@ -51,7 +48,11 @@ export default function Dashboard() {
               setMode("delete");
             }}
           />
-          <Button title="Add Product" onPress={() => setMode("add")} />
+          <Button
+            color="#06c167"
+            title="Add Product"
+            onPress={() => setMode("add")}
+          />
         </>
       )}
       {mode === "add" && <AddProduct onAddProduct={handleAddProduct} />}
