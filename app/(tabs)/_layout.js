@@ -5,7 +5,6 @@ import { supabase } from "../../lib/supabase";
 import { fetchUser } from "../../services/user.service";
 
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "react-native";
 
 export default function AuthLayout() {
   const [session, setSession] = useState(null);
