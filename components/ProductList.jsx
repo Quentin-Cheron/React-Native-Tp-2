@@ -1,15 +1,16 @@
-// /components/ProductList.js
 import React from "react";
 import { Text, View, Button, StyleSheet, FlatList } from "react-native";
 
 export default function ProductList({ products, onUpdate, onDelete }) {
   const renderItem = ({ item }) => (
     <View style={styles.productItem}>
-      <Text style={styles.productName}>{item.name}</Text>
-      <Text>{item.description}</Text>
-      <Text>{item.price}</Text>
-      <Button title="Update" onPress={() => onUpdate(item)} />
-      <Button title="Delete" onPress={() => onDelete(item)} />
+      <Text style={styles.productName}>{item.products_name}</Text>
+      <Text style={styles.productDescription}>{item.products_description}</Text>
+      <Text style={styles.productPrice}>{item.products_price} €</Text>
+      <View style={styles.buttonContainer}>
+        <Button color="#06c167" title="Update" onPress={() => onUpdate(item)} />
+        <Button color="#06c167" title="Delete" onPress={() => onDelete(item)} />
+      </View>
     </View>
   );
 
@@ -17,7 +18,7 @@ export default function ProductList({ products, onUpdate, onDelete }) {
     <FlatList
       data={products}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.container}
     />
   );
@@ -34,12 +35,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 5,
     shadowColor: "#000",
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 3,
   },
   productName: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 5,
+  },
+  productDescription: {
+    marginBottom: 10,
+  },
+  productPrice: {
+    fontWeight: "bold",
+    color: "#007bff",
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

@@ -2,7 +2,10 @@ import { FlatList, ScrollView, StyleSheet, Button } from "react-native";
 import { Text, View } from "react-native";
 import { Image } from "expo-image";
 import { useEffect, useState } from "react";
-import { PostProduct, fetchProducts } from "../../services/products.service";
+import {
+  CheckoutProduct,
+  fetchProducts,
+} from "../../services/products.service";
 import { useRoute } from "@react-navigation/native";
 import { fetchSpecificRestaurants } from "../../services/restaurant.service";
 import { Ionicons } from "@expo/vector-icons";
@@ -25,7 +28,7 @@ export default function RestaurantScreen() {
         throw new Error("Session utilisateur non trouvée.");
       }
 
-      await PostProduct(session.user.id, {
+      await CheckoutProduct(session.user.id, {
         name: productName,
         price: productPrice,
         image: productImage,
@@ -77,7 +80,7 @@ export default function RestaurantScreen() {
                 {item.products_description}
               </Text>
               <Text style={styles.productFavoris}>
-                {item.products_note} <Ionicons name="star" size={10} />
+                {item.products_favoris} <Ionicons name="star" size={10} />
               </Text>
               <Button
                 color="#06c167"

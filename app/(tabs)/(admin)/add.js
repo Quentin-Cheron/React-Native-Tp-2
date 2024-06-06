@@ -1,33 +1,39 @@
 // /screens/Dashboard.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Button, StyleSheet } from "react-native";
 import AddProduct from "../../../components/Addproduct";
 import UpdateProduct from "../../../components/UpdateProduct";
-import DeleteProduct from "../../../components/DeleteProduct";
+import { DeleteProduct } from "../../../components/DeleteProduct";
 import ProductList from "../../../components/ProductList";
+import {
+  FetchDeleteProduct,
+  fetchProducts,
+} from "../../../services/products.service";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mode, setMode] = useState("list");
 
-  const handleAddProduct = (product) => {
-    setProducts([...products, { ...product, id: Date.now().toString() }]);
+  useEffect(() => {
+    fetchProducts().then((data) => {
+      setProducts(data);
+    });
+  }, []);
+
+  const handleAddProduct = async (product) => {
     setMode("list");
+    setProducts([...product]);
   };
 
-  const handleUpdateProduct = (updatedProduct) => {
-    setProducts(
-      products.map((product) =>
-        product.id === updatedProduct.id ? updatedProduct : product
-      )
-    );
+  const handleUpdateProduct = (product) => {
     setMode("list");
+    setProducts([...product]);
   };
 
-  const handleDeleteProduct = (id) => {
-    setProducts(products.filter((product) => product.id !== id));
+  const handleDeleteProduct = async (product) => {
     setMode("list");
+    setProducts([...product]);
   };
 
   return (
