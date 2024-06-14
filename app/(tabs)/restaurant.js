@@ -69,7 +69,7 @@ export default function RestaurantScreen() {
       </View>
       <Text style={styles.titleProduit}>Produits:</Text>
       <FlatList
-        data={products}
+        data={products.filter((product) => product.is_delete === false)}
         style={styles.products}
         scrollEnabled={false}
         renderItem={({ item }) => (

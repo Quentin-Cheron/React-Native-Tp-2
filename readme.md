@@ -8,6 +8,8 @@ Ce projet est une application de commande de produit en ligne. Il permet à un u
 
 ### Partie client
 
+Pour accédez aux fonctionnalités il faut se connecter ou s'inscire en tant que client.
+
 - Afficher la liste des restaurants
 
 - Afficher les détails d'un restaurant
@@ -15,6 +17,8 @@ Ce projet est une application de commande de produit en ligne. Il permet à un u
 - Commander un produit
 
 ### Partie administrateur
+
+Pour accéder à la partie administrateur, il faut dans la base de donnée Supabase, changer le rôle de l'utilisateur en `1` au lieu de `0` par défaut.
 
 - Ajouter un produit
 
